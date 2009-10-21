@@ -1,0 +1,176 @@
+#!/usr/bin/make -f
+# Copyright (c) 1997 Joey Hess
+# Copyright (c) 1999-2002 Herbert Xu
+# $Id: rules,v 1.1 2004/05/27 10:48:25 kobras Exp $
+
+# Uncomment this to turn on verbose mode. 
+#export DH_VERBOSE=1
+
+# This has to be exported to make some magic below work.
+export DH_OPTIONS
+
+export DEB_HOST_GNU_TYPE  ?= $(shell dpkg-architecture -qDEB_HOST_GNU_TYPE)
+export DEB_BUILD_GNU_TYPE ?= $(shell dpkg-architecture -qDEB_BUILD_GNU_TYPE)
+
+SHELL := sh -e
+
+BUILD := build
+CARGS := \
+	--with-gnu-ld --enable-static --prefix=/usr \
+	--disable-verbose \
+	--disable-build-12 --disable-build-20 --enable-build-21 \
+	--enable-xrender --enable-production
+
+ifeq ($(DEB_BUILD_GNU_TYPE), $(DEB_HOST_GNU_TYPE))
+  CARGS += --build $(DEB_HOST_GNU_TYPE)
+else
+  CARGS += --build $(DEB_BUILD_GNU_TYPE) --host $(DEB_HOST_GNU_TYPE)
+endif
+
+CFLAGS = -Wall -g
+ifneq (,$(filter noopt,$(DEB_BUILD_OPTIONS)))
+     CFLAGS += -O0
+else
+     CFLAGS += -O2
+endif
+
+configure: configure-stamp
+configure-stamp:
+	dh_testdir
+	cp -p /usr/share/misc/config.guess ./
+	cp -p /usr/share/misc/config.sub ./
+	QUILT_PATCHES=debian/patches quilt push -a || test $$? = 2
+	-chmod u+x debian/fixrpath
+	if [ ! -d $(BUILD) ]; then mkdir $(BUILD); fi
+	cd $(BUILD); ../configure $(CARGS); ../debian/fixrpath;
+	touch configure-stamp
+
+build: build-stamp
+build-stamp: configure-stamp
+	dh_testdir
+	$(MAKE) -C $(BUILD)
+	touch build-stamp
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f build-stamp
+	rm -f configure-stamp
+	rm -rf build
+	QUILT_PATCHES=debian/patches quilt pop -a -R || test $$? = 2
+	rm -f config.guess config.sub
+	rm -rf .pc
+	dh_clean
+
+install: DH_OPTIONS=
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	$(MAKE) DESTDIR=$(CURDIR)/debian/lesstif2 -C build/lib/Xm-2.1 install
+	$(MAKE) DESTDIR=$(CURDIR)/debian/lesstif2 -C build/lib/Mrm-2.1 install
+	mv debian/lesstif2/usr/lib/*.a debian/lesstif2-dev/usr/lib
+	mv debian/lesstif2/usr/lib/*.so debian/lesstif2-dev/usr/lib
+	rm -f debian/lesstif2/usr/lib/*.la
+	# Work around libtool bug where make install will relink the libraries
+	# with the current system libraries.
+	find build/lib/Xm-2.1/.libs build/lib/Mrm-2.1/.libs \
+		-type f -name '*.so.*[^T]' | \
+		xargs cp --target-directory debian/lesstif2/usr/lib
+	chmod a-x debian/lesstif2/usr/lib/*
+	$(MAKE) DESTDIR=$(CURDIR)/debian/lesstif2-dev \
+		-C build/include/Motif-2.1 install
+	$(MAKE) DESTDIR=$(CURDIR)/debian/lesstif-doc \
+		-C build/doc install
+	mv debian/lesstif-doc/usr/LessTif \
+	   debian/lesstif-doc/usr/share/doc/lesstif-doc
+	mv debian/lesstif-doc/usr/share/man/man[15] \
+	   debian/lesstif-bin/usr/share/man
+	rm debian/lesstif-doc/usr/share/doc/lesstif-doc/doc/Lessdox
+	for i in debian/lesstif-doc/usr/share/doc/lesstif-doc/doc/*.html; do \
+		sed -e 's;http:Lessdox;http://www.lesstif.org/Lessdox;g' \
+		    -e 's;"Lessdox;"http://www.lesstif.org/Lessdox;g' $$i \
+			> $$i.new; \
+		mv $$i.new $$i; \
+	done
+	mv debian/lesstif-doc/usr/share/doc/lesstif-doc/doc/UIL.txt \
+	   debian/lesstif-bin/usr/share/doc/lesstif-bin
+	$(MAKE) DESTDIR=$(CURDIR)/debian/lesstif-bin \
+		-C build/clients/Motif-2.1 install
+	{ \
+		cd debian/lesstif-bin; \
+		rm etc/X11/mwm/*; \
+		mv usr/lib/X11/app-defaults etc/X11; \
+		rmdir usr/lib/X11; \
+		rmdir usr/lib; \
+		cd ../..; \
+	}
+	for p in man1/uil.1 man1/ltversion.1 man1/mwm.1 man1/lesstif.1 \
+		man1/xmbind.1 man5/mwmrc.5 man5/VirtualBindings.5; do \
+		mv debian/lesstif-bin/usr/share/man/$${p} \
+			debian/lesstif-bin/usr/share/man/$${p}x; \
+	done
+	ln -s mwmrc.5x debian/lesstif-bin/usr/share/man/man5/system.mwmrc.5x
+	install debian/mwm-menumethod debian/lesstif-bin/etc/menu-methods
+	cp debian/etcmwmrc debian/lesstif-bin/etc/X11/mwm/system.mwmrc-menu
+	echo "include-menu-defs" \
+		>> debian/lesstif-bin/etc/X11/mwm/system.mwmrc-menu
+	touch install-stamp
+
+# Build architecture-independent files here.
+# Pass -i to all debhelper commands in this target to reduce clutter.
+binary-indep: DH_OPTIONS=-i
+binary-indep: install
+	dh_testdir
+	dh_testroot
+	dh_installdocs
+	dh_installexamples
+	dh_installmenu
+#	dh_installemacsen
+#	dh_installpam
+#	dh_installinit
+	dh_installcron
+#	dh_installmanpages
+	dh_installinfo
+	dh_installchangelogs -k ReleaseNotes.txt
+	dh_link
+	dh_compress
+	dh_fixperms
+	dh_installdeb
+#	dh_perl
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+# Build architecture-dependent files here.
+# Pass -a to all debhelper commands in this target to reduce clutter.
+binary-arch: DH_OPTIONS=-a
+binary-arch: install
+	dh_testdir
+	dh_testroot
+	dh_install
+	dh_installdocs
+	dh_installexamples
+	dh_installmenu
+#	dh_installemacsen
+#	dh_installpam
+#	dh_installinit
+	dh_installcron
+#	dh_installmanpages
+	dh_installinfo
+	dh_installchangelogs -k ReleaseNotes.txt
+	dh_strip --dbg-package=lesstif2-dbg
+	dh_link
+	dh_compress
+	dh_fixperms
+	dh_makeshlibs
+	dh_installdeb
+#	dh_perl
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
+
+binary: binary-indep binary-arch
+.PHONY: configure build clean binary-indep binary-arch binary install

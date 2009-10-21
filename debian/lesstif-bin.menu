@@ -1,0 +1,4 @@
+?package(lesstif-bin):needs="wm" \
+        section="Window Managers" \
+        title="Mwm" longtitle="Clone of Motif Window Manager"\
+        command="/usr/bin/mwm"

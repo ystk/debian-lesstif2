@@ -1,0 +1,17 @@
+#!/bin/sh
+# $Id: lesstif-bin.prerm,v 1.1 2004/05/27 10:48:25 kobras Exp $
+set -e
+
+case "$1" in
+upgrade | failed-upgrade)
+	;;
+remove | deconfigure)
+	update-alternatives --remove x-window-manager /usr/bin/mwm
+	;;
+*)
+	echo "$0: incorrect arguments: $*" >&2
+	exit 1
+	;;
+esac
+
+#DEBHELPER#

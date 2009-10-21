@@ -1,0 +1,14 @@
+000_bootstrap_script.diff
+000_libtool_linking.diff
+005_libtool_LT_HAVE.diff
+005_libtool_obsolete.diff
+010_rebootstrap.diff
+020_missing_xm_h.diff
+020_render_table_crash.diff
+020_xpmpipethrough.diff
+030_manpage_VirtualBindings
+030_manpage.diff
+031_use_X11_Xtos_header.diff
+040_fedora_PutPixel32.diff
+040_fedora_XxxxProperty-64bit.diff
+080_fix_spelling-error-in-binary

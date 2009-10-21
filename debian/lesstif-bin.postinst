@@ -1,0 +1,27 @@
+#!/bin/sh
+# $Id: lesstif-bin.postinst,v 1.1 2004/05/27 10:48:25 kobras Exp $
+set -e
+
+case "$1" in
+configure | abort-remove | abort-deconfigure)
+	if
+		[ "$1" = configure ] && [ -n "$2" ] &&
+		dpkg --compare-versions "$2" lt 1:0.92.26-2
+	then
+		update-alternatives --remove x-window-manager \
+			/usr/X11R6/bin/mwm
+	fi
+	update-alternatives --install /usr/bin/x-window-manager \
+			    x-window-manager /usr/bin/mwm 45 \
+			    --slave /usr/share/man/man1/x-window-manager.1.gz \
+			    x-window-manager.1.gz /usr/share/man/man1/mwm.1.gz
+	;;
+abort-upgrade)
+	;;
+*)
+	echo "$0: incorrect arguments: $*" >&2
+	exit 1
+	;;
+esac
+
+#DEBHELPER#

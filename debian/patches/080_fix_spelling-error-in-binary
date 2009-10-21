@@ -1,0 +1,37 @@
+Fix lintian warning spelling-error-in-binary.
+Index: lesstif2-0.95.0/clients/Motif-2.1/mwm/mwmparse.c
+===================================================================
+--- lesstif2-0.95.0.orig/clients/Motif-2.1/mwm/mwmparse.c	2009-05-01 13:43:50.000000000 +0200
++++ lesstif2-0.95.0/clients/Motif-2.1/mwm/mwmparse.c	2009-05-01 13:44:25.000000000 +0200
+@@ -1883,11 +1883,11 @@
+ 			        mi->next = (MenuItem *) NULL;
+ 			        mi->prev = (MenuItem *) NULL;
+ 			        if ((func == F_EXEC) || (func == F_RESTART)) {
+-			            mi->item = XtNewString("DOIT");
++			            mi->item = XtNewString("DO IT");
+			            mi->action = (yyvsp[(3) - (3)].function).arg;
+ 			        }
+ 			        else {
+-			            mi->item = XtNewString("DONT DOIT");
++			            mi->item = XtNewString("DON'T DO IT");
+			            mi->action = (yyvsp[(3) - (3)].function).arg;
+ 			        }
+ 				mi->item2 = "";
+Index: lesstif2-0.95.0/clients/Motif-2.1/mwm/mwmparse.y
+===================================================================
+--- lesstif2-0.95.0.orig/clients/Motif-2.1/mwm/mwmparse.y	2009-05-01 13:42:13.000000000 +0200
++++ lesstif2-0.95.0/clients/Motif-2.1/mwm/mwmparse.y	2009-05-01 13:44:10.000000000 +0200
+@@ -320,11 +320,11 @@
+ 			        mi->next = (MenuItem *) NULL;
+ 			        mi->prev = (MenuItem *) NULL;
+ 			        if ((func == F_EXEC) || (func == F_RESTART)) {
+-			            mi->item = XtNewString("DOIT");
++			            mi->item = XtNewString("DO IT");
+ 			            mi->action = $<function>3.arg;
+ 			        }
+ 			        else {
+-			            mi->item = XtNewString("DONT DOIT");
++			            mi->item = XtNewString("DON'T DO IT");
+ 			            mi->action = $<function>3.arg;
+ 			        }
+ 				mi->item2 = "";

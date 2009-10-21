@@ -1,0 +1,14 @@
+[Desktop Entry]
+Version=1.0
+Name=Mwm
+Comment=Clone of Motif Window Manager
+Comment[nl]=Kloon van Motif window manager
+Exec=mwm
+Terminal=false
+Type=Application
+Categories=Graphics;Motif;
+GenericName=Window Manager
+GenericName[nl]=Window manager
+
+[Window Manager]
+SessionManaged=true

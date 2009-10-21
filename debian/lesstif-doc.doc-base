@@ -1,0 +1,10 @@
+Document: lesstif
+Title: LessTif Documentation
+Author: The Hungry Programmers
+Abstract: Docmentation about the LessTif GUI library
+ which is a free implementation of the Motif(R) API.
+Section: Programming
+
+Format: HTML
+Index: /usr/share/doc/lesstif-doc/doc/index.html
+Files: /usr/share/doc/lesstif-doc/doc/*.html

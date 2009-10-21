@@ -1,0 +1,69 @@
+Source: lesstif2
+Maintainer: Sam Hocevar <sho@debian.org>
+Uploaders: Paul Gevers <paul@climbing.nl>
+Standards-Version: 3.8.3
+Section: libs
+Priority: optional
+Build-Depends: debhelper (>= 5.0), quilt, bison, flex, libice-dev, libsm-dev, libx11-dev, libxext-dev, libxp-dev, libxt-dev, libxrender-dev, libxft-dev, libfontconfig1-dev, libfreetype6-dev, autotools-dev
+Homepage: http://www.lesstif.org/
+Vcs-Svn: svn://svn.debian.org/svn/collab-maint/deb-maint/lesstif2
+Vcs-Browser: http://svn.debian.org/wsvn/collab-maint/deb-maint/lesstif2
+
+Package: lesstif2
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Conflicts: libmotif
+Replaces: libmotif
+Description: OSF/Motif 2.1 implementation released under LGPL
+ Contains runtime shared libraries for LessTif, the Hungry Programmers'
+ version of OSF/Motif 2.1.
+ .
+ Contains runtime shared libraries for libXm and libMrm.
+
+Package: lesstif2-dbg
+Architecture: any
+Section: debug
+Priority: extra
+Depends: lesstif2 (= ${binary:Version}), ${misc:Depends}
+Description: lesstif2 debugging files
+ LessTif, made by the Hungry Programmers, is a free (LGPL-ed) version of
+ OSF/Motif; it aims ultimately at binary compatibility with Motif 2.1.
+ .
+ This package contains the debugging symbols for the libXm and libMrm
+ libraries and the mwm window manager from the lesstif2 and lesstif-bin
+ packages.
+
+Package: lesstif2-dev
+Section: libdevel
+Architecture: any
+Depends: lesstif2, libice-dev, libsm-dev, libx11-dev, libxext-dev, libxp-dev, libxt-dev, libxrender-dev, libxft-dev, libfontconfig1-dev, libfreetype6-dev, ${misc:Depends}
+Replaces: lesstifg-dbg (<< 1:0.88.1-1), lesstifg-dev, lesstif-dev, libmotif-dev
+Conflicts: lesstifg-dev, lesstif-dev, libmotif-dev
+Description: development library and header files for LessTif 2.1
+ Contains C header files and development shared libraries for
+ LessTif. LessTif, made by the Hungry Programmers, is a free (LGPL-ed)
+ version of OSF/Motif; it aims ultimately at binary compatibility with Motif
+ 2.1.
+ .
+ Contains static libraries and header files for libXm and libMrm.
+
+Package: lesstif-bin
+Section: x11
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Provides: x-window-manager
+Description: user binaries for LessTif
+ Contains the LessTif user binaries. LessTif is the Hungry Programmers'
+ version of the OSF/Motif graphical toolkit, including a clone of mwm, the
+ Motif Window Manager.
+
+Package: lesstif-doc
+Section: doc
+Architecture: all
+Depends: ${misc:Depends}
+Replaces: lesstifg (<< 1:0.89.0-1)
+Description: documentation for LessTif
+ Contains the LessTif documentation. LessTif is the Hungry Programmers'
+ version of the OSF/Motif graphical toolkit, including a clone of mwm, the
+ Motif Window Manager.
+

@@ -1,0 +1,21 @@
+Fri Nov  7 22:50:31 GMT 2008  Steve Cotton <steve@s.cotton.clara.co.uk>
+  * Get architecture specific #defs from X11's Xtos.h
+diff -rN -u old-lesstif2-0.95.0-1/include/Motif-2.1/XmI/XpmI.h new-lesstif2-0.95.0-1/include/Motif-2.1/XmI/XpmI.h
+--- old-lesstif2-0.95.0-1/include/Motif-2.1/XmI/XpmI.h	2008-11-07 23:05:59.000000000 +0000
++++ new-lesstif2-0.95.0-1/include/Motif-2.1/XmI/XpmI.h	2008-11-07 23:05:59.000000000 +0000
+@@ -76,12 +76,8 @@
+ 
+ #include <string.h>
+ 
+-/* the following is defined in X11R6 but not in previous versions */
+-#ifdef __alpha
+-#ifndef LONG64
+-#define LONG64
+-#endif
+-#endif
++/* architecture-specific defines, such as LONG64 on arches with 64-bit longs */
++#include <X11/Xtos.h>
+ 
+ #ifdef VMS
+ #include <unixio.h>
+

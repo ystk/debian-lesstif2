@@ -1,0 +1,1167 @@
+lesstif2 (1:0.95.2-1) unstable; urgency=low
+
+  [Sam Hocevar]
+  * Acknowledging past NMUs. Thanks to Aaron M. Ucko and Paul Gevers, who
+    now co-maintains this package (Closes: #396199, #479779, #503361, #314440,
+    Closes: #43640, #87745, #356017, #496081, #330057, #439186).
+  * debian/control:
+    + Add Paul Gevers to the uploaders list.
+    + Update Vcs fields.
+
+  [Paul Gevers]
+  * New upstream release (dropping deprecated patches)
+    - 020_bad_integer_cast.diff (solved upstream)
+    - 020_unsigned_int.diff (included upstream)
+    - 021_xim_chained_list_crash.diff (included upstream)
+    - 031_fix_inverted_scrollwheel.diff (included upstream)
+    - 031_shutup_xtungrabbutton.diff (included upstream)
+    - 040_fedora_accelkeys.diff (included upstream)
+    - 040_fedora_c++fix.diff (included upstream)
+    - 040_fedora_text.diff (included upstream)
+    - 050_cvs_invalid_pointer.diff (was from upstream)
+    - 050_cvs_1773603_invalid_pointer_TextOut.c.diff (was from upstream)
+    - 050_cvs_1773603_invalid_pointer_List.c.diff (was from upstream)
+    - 050_cvs_1773603_invalid_pointer_Label.c.diff (was from upstream)
+    - 050_cvs_1773603_invalid_pointer_LabelG.c.diff (was from upstream)
+    - 050_cvs_class_initialize_DialogS.c.diff (was from upstream)
+    - 050_cvs_attachbottom_Form.c.diff (was from upstream)
+    - 060_update_manpages (included upstream)
+    - 071_fix_crash_on_ESC_Traversal.c (included upstream)
+    Remaining patches (updated descriptions, conform current DEP3
+    proposal):
+    - 000_bootstrap_script.diff (updated, in sync with upstream CVSMake)
+    - 000_libtool_linking.diff (leave as is, debian specific, path)
+    - 010_rebootstrap (updated, see also 000_bootstrap_script.diff)
+    - 020_missing_xm_h.diff (not included upstream yet)
+    - 020_render_table_crash.diff (in upstream cvs)
+    - 020_xpmpipethrough.diff (not included upstream yet)
+    - 030_manpage.diff (not included upstream, debian specific, path)
+    - 031_use_X11_Xtos_header.diff (in upstream cvs)
+    - 040_fedora_XxxxProperty-64bit.diff updated to prevent segfault on
+      i386 when copy/pasting. Updated with courtesy from Hans de Goede
+      (Fedora) (in upstream cvs)
+    - 080_fix_spelling-error-in-binary (not included upstream yet,
+      updated)
+    Added patches
+    - 030_manpage_Virtualbindings to fix manpage-section-mismatch
+      (lintian)
+    - 005_libtool_LT_HAVE.diff to fix a libtool error:
+      possibly undefined macro: LT_HAVE_FREETYPE and LT_HAVE_XRENDER
+    - 005_libtool_obsolete.diff to fix autoconf warnings about obsolete
+      MACRO's.
+    - 040_fedora_PutPixel32.diff fixes PutPixel32 crashing on 64 bit
+      completly, with courtesy from Hans de Goede (Fedora)
+      (Closes: #409093) (in upstream cvs)
+  * debian/control
+    - Update policy to 3.8.3 (no changes needed)
+    - Add ${misc:Depends} to all depends fields (lintian)
+  * debian/rules
+    - Add DEB_HOST_GNU_TYPE and DEB_BUILD_GNU_TYPE to CARGS in line with
+      /usr/share/doc/autotools-dev/README.Debian.gz
+    - Removed CARGS without-freetype-config without-fontconfig-config
+      because freetype is a build depend and configure can't cope (bug?)
+    - Removed deprecated dh_desktop call
+  * Create debugging symbols for lesstif2 (-dbg package)
+  * Added README.source to confirm to policy 4.14 (lintian)
+  * Fixed categories in debian/lesstif-bin.desktop (copied by accident
+    from an other package).
+
+ -- Paul Gevers <paul@climbing.nl>  Wed, 21 Oct 2009 08:58:30 +0200
+
+lesstif2 (1:0.95.0-2.3) unstable; urgency=low
+
+  * NMU upload to give some love to lesstif2 (continued)
+  * Fix lintian issue outdated-autotools-helper-file
+    - Add autotools-dev to build dependencies
+    - debian/rules use config.(guess,sub) from autotools-dev instead of 
+      shipped ones.
+    - Removed the changes for config.(guess,sub) from 
+      debian/patches/010_rebootstrap.diff
+  * Add lintian overwrite for package-name-doesnt-match-sonames because
+    library names aren't particularly suitable library names.
+  * Added lesstif2.symbols file based on 
+    http://qa.debian.org/cgi-bin/mole/seedsymbols/?pkgname=lesstif2
+    and inspection of the changelog in combination with changes in header
+    files.
+
+ -- Paul Gevers <paul@climbing.nl>  Sat, 02 May 2009 12:06:00 +0200
+
+lesstif2 (1:0.95.0-2.2) UNRELEASED; urgency=low
+
+  * NMU upload to give some love to lesstif2
+  * debian/patches:
+   - Add 031_fix_inverted_scrollwheel.diff by Kacper Wysocki, fix 
+     invalid mouse scroll wheel bind (Closes: 396199)
+     -- http://sourceforge.net/tracker/index.php?\
+         func=detail&aid=1625384&group_id=8596&atid=108596
+   - Add 031_shutup_xtungrabbutton.diff by Filippo Giunchedi, stop 
+     lessstif from spewing messages about XtUngrab (Closes: 479779)
+     -- upstream bug 217326
+   - Add 031_use_X11_Xtos_header.diff by Steve Cotton (Closes: 503361)
+      to include LONG64 definition instead of defining
+   - Add 040_fedora_text.diff small fixes from upstream.
+   - Add 040_fedora_resource.diff fixes error in DialogS.c, function
+     class_initialize.
+   - Add 040_fedora_c++fix.diff includes X11/ShellP.h after c.
+   - Add 040_fedora_XxxxProperty-64bit.diff to fix 64 bit 
+     XChange/GetWindowProperty issues, including fix cut and paste from 
+     to lesstif apps on 64 bits machines (Closes: 314440)
+   - Add 040_fedora_accelkeys.diff to fix accelkeys which use more then 
+     one modifier
+   - Add 050_cvs_invalid_pointer.diff, 
+         050_cvs_1773603_invalid_pointer_TextOut.c.diff,
+         050_cvs_1773603_invalid_pointer_List.c.diff,
+         050_cvs_1773603_invalid_pointer_Label.c.diff and
+         050_cvs_1773603_invalid_pointer_LabelG.c.diff
+     to fix crashing with a wildly invalid pointer inside XmFontListCopy()
+     -- upstream bugs 1773603 and 1298166
+   - Add 050_cvs_class_initialize_DialogS.c.diff to fix error in function
+     class_initialize
+   - Add 050_cvs_attachbottom_Form.c.diff to fix the layout of applications
+     with widgets which have the AttachBottom
+   - Add 060_update_manpages to fix bad-whatis-entry and several
+     inconsistencies (Closes: 43640 and 87745)
+   - Add 071_fix_crash_on_ESC_Traversal.c to fix crashing applications
+     when pressing <ESC> in menus (Closes: 356017)
+  * Updated debian/rules
+   - not move VirtualBindings.5 to .1x but to .5x
+   - remove the quilt .pc directory in clean target
+   - honor noopt flag in DEB_BUILD_OPTIONS (Closes: 496081)
+  * Add mwm.desktop file (Closes: 330057)
+  * Update policy to 3.8.1
+   - Added homepage field in debian/control
+   - Renamed section in debian/lesstif-bin.menu (menu policy)
+  * Removed "Apps/" in debian/lesstif-doc.docbase (lintian)
+  * Removed duplicate "library" from debian/control (lintian)
+  * Changed order of dh_installdeb and dh_makeshlibs in debian/rules (lintian)
+  * Added debian/watch file.
+  * Updated debian/copyright with version numbers of the (L)GPL (lintian)
+  * Added description to old patch files (lintian)
+
+ -- Paul Gevers <paul@climbing.nl>  Wed, 01 Apr 2009 10:10:13 +0200
+
+lesstif2 (1:0.95.0-2.1) unstable; urgency=low
+
+  * Non-maintainer upload per "everlasting BSP" rules.
+  * debian/patches/020_render_table_crash.diff:
+    + New patch.  Fix for a crash in _XmRenderTableFinaliseTag affecting
+      many Vibrant-based applications.  (Closes: #439186.)
+
+ -- Aaron M. Ucko <ucko@debian.org>  Tue, 25 Sep 2007 14:50:26 -0400
+
+lesstif2 (1:0.95.0-2) unstable; urgency=low
+
+  * debian/patches/022_gcc42_compliant_headers.diff:
+    + Revert that patch. extern "C" is the proper way to go, it's libxt-dev
+      that needs fixing (Reopens: #377230, #377100).
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Thu, 17 May 2007 13:23:41 +0200
+
+lesstif2 (1:0.95.0-1) unstable; urgency=low
+
+  * New upstream release.
+
+  * debian/control: 
+    + Added Vcs control fields.
+    + Build-depend on debhelper (>= 5.0).
+
+  * debian/patches/010_rebootstrap.diff
+    debian/patches/020_xpmpipethrough.diff:
+    + Refreshed patches.
+
+  * debian/patches/020_upstream.diff:
+    + Patch is included in this release. Removed it.
+
+  * debian/patches/021_xim_chained_list_crash.diff:
+    + New patch. Fix for a crash in the XIM chained list, courtesy of Julien
+      Soula (Closes: #416538).
+
+  * debian/patches/022_gcc42_compliant_headers.diff:
+    + New patch. Make exported headers gcc-4.2 complian, courtesy of Martin
+      Michlmayr (Closes: #377230, #377100).
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Wed, 16 May 2007 01:39:17 +0200
+
+lesstif2 (1:0.94.4-2) unstable; urgency=high
+
+  * Maintainer upload.
+  * Acknowledge previous NMU (Closes: #339864). Thanks to Luk Claes.
+  * Switch patch management to quilt.
+  * debian/control:
+    + Set policy to 3.7.2.
+    + Build-depend on quilt.
+  * debian/rules:
+    + Stop shipping .la files.
+    + No longer copy the whole source directory upon build.
+
+  * debian/patches/000_bootstrap_script.diff:
+    + New patch -- add a proper bootstrap script.
+
+  * debian/patches/000_libtool_linking.diff:
+    + New patch from old diff.gz -- fix library linking.
+
+  * debian/patches/010_rebootstrap.diff:
+    + New patch from old diff.gz -- rebootstrap package.
+
+  * debian/patches/020_bad_integer_cast.diff:
+    + New patch from old diff.gz -- cast pointers to uintptr_t instead of
+      unsigned int.
+
+  * debian/patches/020_missing_xm_h.diff:
+    + New patch from old diff.gz -- build fix due to missing <Xm/Xm.h>.
+
+  * debian/patches/020_unsigned_int.diff:
+    + New patch from old diff.gz -- fix overflows in the XPM loaders
+      (CAN-2005-0605).
+
+  * debian/patches/020_upstream.diff:
+    + New patch from old diff.gz -- various patches from upstream.
+
+  * debian/patches/020_xpmpipethrough.diff:
+    + New patch from old diff.gz -- backport fixes from X11R6.8.2
+      (CAN-2004-0914).
+
+  * debian/patches/020_yow.diff:
+    + Remove useless verbosity to stderr (Closes: #360073).
+
+  * debian/patches/030_manpage.diff:
+    + New patch from old diff.gz -- fix file paths in manpage.
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Fri, 26 May 2006 22:13:34 +0200
+
+lesstif2 (1:0.94.4-1.1) unstable; urgency=high
+
+  * Non-maintainer upload.
+  * Fix FTBFS by including Xm.h header (Closes: #339864).
+
+ -- Luk Claes <luk@debian.org>  Wed, 25 Jan 2006 19:30:29 +0100
+
+lesstif2 (1:0.94.4-1) unstable; urgency=low
+
+  * Upstream dropped support for lesstif1. Changing source package to
+    lesstif2 and continuing the lesstif1 package separately.
+  * debian/rules:
+    + Disabled lesstif1 support.
+    + Use --enable-production to disable debug messages.
+  * debian/control:
+    + Set policy to 3.6.2.1.
+    + Build-depend on debhelper >= 4.0.
+    + No longer build-depend on autoconf, automake and libtool.
+  * debian/lesstif-bin.conffiles:
+    + Deleted this file. All conffiles are already in /etc.
+  * Rebootstrapped "." and "test".
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Fri, 11 Nov 2005 16:07:34 +0100
+
+lesstif1-1 (1:0.93.94-11.4) unstable; urgency=high
+
+  * NMU.
+  * lib/Xm/LTXpm.c, lib/Xm-2.1/XpmRdFToI.c, lib/Xm-2.1/XpmWrFFrI.c:
+    Backport additional fixes from X11R6.8.2, reverting regressions in
+    functionality caused by overly aggressive filename checks (#286164)
+    and non-working popen code (#308783).
+  * lib/Xm/LTXpm.c (_LtXpmCreateImageFromXpmImage): Remove duplicate
+    check left over from the CAN-2004-0688 fix.
+  * lib/Xm/LTXpm.c (ParsePixels): Placate gcc by undefining FREE_CIDX
+    before redefining it.
+
+ -- Matej Vela <vela@debian.org>  Thu, 12 May 2005 09:44:02 +0200
+
+lesstif1-1 (1:0.93.94-11.3) unstable; urgency=high
+
+  * NMU.
+  * lib/Xm/LTXpm.c: Backport previous security fixes to lesstif1
+    (CAN-2004-0914, CAN-2005-0605).  Thanks to Kimmo Jukarainen for
+    doing the bulk of the work!  Closes: #294099.  
+  * lib/Xm-2.1/RCUtils.c: Apply upstream fix for label positioning in
+    menus.  Closes: #279402.
+
+ -- Matej Vela <vela@debian.org>  Wed, 11 May 2005 00:29:04 +0200
+
+lesstif1-1 (1:0.93.94-11.2) unstable; urgency=HIGH
+
+  * Merged security fixes from Ubuntu:
+  .
+  * SECURITY UDPATE: Fix multiple Xpm vulnerabilities.
+  * lib/Xm-2.1/Xpm.c: Split into several files (as upstream did for easier
+    patching), applied fixes pulled from new upstream version. Fixes part of
+    #294099 (CAN-2004-0914)
+  * lib/Xm-2.1/Xpmcreate.c, lib/Xm-2.1/Xpmscan.c: Re-applied the fix for
+    CAN-2005-0605
+
+ -- Joey Hess <joeyh@debian.org>  Thu, 10 Mar 2005 19:15:21 -0500
+
+lesstif1-1 (1:0.93.94-11.1) unstable; urgency=HIGH
+
+  * NMU
+  * Apply fix for newest libXpm buffer overflows in lesstif1, involving a
+    negative bitmap_unit value. Fixed both lesstif1 and lesstif2.
+    Closes: #298939 (CAN-2005-0605)
+
+ -- Joey Hess <joeyh@debian.org>  Thu, 10 Mar 2005 16:34:21 -0500
+  
+lesstif1-1 (1:0.93.94-11) unstable; urgency=low
+
+  * Mention CAN-2004-0688 in the 1:0.93.94-9 changelog.
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Wed, 29 Sep 2004 13:17:38 +0200
+
+lesstif1-1 (1:0.93.94-10) unstable; urgency=high
+
+  * lib/Xm: fixed the XPM vulnerability backport (Closes: #274015).
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Wed, 29 Sep 2004 13:17:38 +0200
+
+lesstif1-1 (1:0.93.94-9) unstable; urgency=high
+
+  * Urgency = high because of a security fix.
+  * lib/Xm-2.1: backported changes from upstream's 0.93.96 release, which
+    cannot be packaged as it removes support for lesstif1 (Closes: #271631):
+    + Adds scroll wheel support.
+    + Fix uninitialised memory usage.
+    + XPM vulnerability fix for CAN-2004-0688 (Closes: #273591).
+  * lib/Xm: backported the XPM vulnerability fix to lesstif1.
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Mon, 27 Sep 2004 14:13:38 +0200
+
+lesstif1-1 (1:0.93.94-8) unstable; urgency=medium
+
+  * debian/control:
+    + Build-depend on libfontconfig1-dev, libfreetype6-dev (Closes: #265864).
+    + Added missing lesstif-dev dependency on libxft-dev.
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Mon, 16 Aug 2004 00:32:14 +0200
+
+lesstif1-1 (1:0.93.94-7) unstable; urgency=medium
+
+  * debian/control:
+    + Xrender needs Xft (Closes: #265864).
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Sun, 15 Aug 2004 16:38:17 +0200
+
+lesstif1-1 (1:0.93.94-6) unstable; urgency=low
+
+  * debian/rules:
+    + Disabled verbose library messages by user request (Closes: #241816).
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Mon,  9 Aug 2004 23:26:28 +0200
+
+lesstif1-1 (1:0.93.94-5) unstable; urgency=low
+
+  * New maintainer (Closes: #249708).
+  * debian/rules:
+    + Use debian/compat instead of DH_COMPAT.
+    + Re-enabled Xrender now that it is a shared library.
+    + No longer use dh_undocumented.
+  * debian/control:
+    + Set policy to 3.6.1.1.
+    + Set section of -dev packages to libdevel.
+    + Uncapitalised short descriptions and removed trailing periods.
+    + Removed xlibs-dev from depends and build-depends.
+  * lib/Xm*/CascadeB*.c:
+    + Fixed wrong int/long size assumption thanks to Nick Materer
+      (Closes: #258365).
+  * include/Motif-*/XmI/*XpmI.h:
+    + Do not cast pointers to unsigned int but to uintptr_t.
+
+ -- Sam Hocevar (Debian packages) <sam+deb@zoy.org>  Wed,  4 Aug 2004 22:55:59 +0200
+
+lesstif1-1 (1:0.93.94-4) unstable; urgency=low
+
+  * QA upload.
+  * lib/Xm/DialogS.c, lib/Xm-2.1/DialogS.c: Applied patch from 
+    Herbert Xu to fix DialogS widget realisation. Closes: #250916
+  * debian/control: Set maintainer to Debian QA Group.
+
+ -- Daniel Kobras <kobras@debian.org>  Thu, 27 May 2004 12:59:32 +0200
+
+lesstif1-1 (1:0.93.94-3) unstable; urgency=low
+
+  * Fixed typo in copyright (Francesco Poli).
+  * Fixed nedit dialog modality (closes: #69895).
+  * Expanded dependencies on xlibs-dev (closes: #241506).
+  * Fixed extra XtRemoveGrab's on destroy (closes: #214412).
+  * Check whether widget is mapped in _XmIsViewable.
+  * Call _XmNavigChangeManaged in DialogS (closes: #232857).
+  * Removed bogus _XmScrolledWPreferredSize change.
+
+ -- Herbert Xu <herbert@debian.org>  Sun,  9 May 2004 20:37:26 +1000
+
+lesstif1-1 (1:0.93.94-2) unstable; urgency=low
+
+  * Catch errors in libtool/automake/autoconf (closes: #225637).
+  * Disabled xrender (closes: #227502).
+
+ -- Herbert Xu <herbert@debian.org>  Sat, 17 Jan 2004 10:56:08 +1100
+
+lesstif1-1 (1:0.93.94-1) unstable; urgency=low
+
+  * New upstream release (closes: #222533).
+
+ -- Herbert Xu <herbert@debian.org>  Fri,  5 Dec 2003 20:11:47 +1100
+
+lesstif1-1 (1:0.93.91-2) unstable; urgency=low
+
+  * Fixed gadget crashes induced by upstream fixes to 772755 (closes: #214276).
+
+ -- Herbert Xu <herbert@debian.org>  Mon,  6 Oct 2003 12:07:19 +1000
+
+lesstif1-1 (1:0.93.91-1) unstable; urgency=low
+
+  * New upstream release (closes: #211597).
+  * Updated package source URL.
+
+ -- Herbert Xu <herbert@debian.org>  Sun,  5 Oct 2003 14:56:31 +1000
+
+lesstif1-1 (1:0.93.46-1) unstable; urgency=low
+
+  * New upstream release (closes: #210281).
+
+ -- Herbert Xu <herbert@debian.org>  Thu, 11 Sep 2003 21:45:50 +1000
+
+lesstif1-1 (1:0.93.44-2) unstable; urgency=low
+
+  * Fixed Motif 1.2 problem with XFT (closes: #200497).
+
+ -- Herbert Xu <herbert@debian.org>  Wed, 16 Jul 2003 22:05:48 +1000
+
+lesstif1-1 (1:0.93.44-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Herbert Xu <herbert@debian.org>  Sun,  6 Jul 2003 11:36:51 +1000
+
+lesstif1-1 (1:0.93.41-1) unstable; urgency=low
+
+  * New upstream release.
+  * Restored inter-library dependencies in lesstif1 (closes: 194719).
+  * Added missing m4 files.
+
+ -- Herbert Xu <herbert@debian.org>  Wed, 28 May 2003 21:02:04 +1000
+
+lesstif1-1 (1:0.93.40-1) unstable; urgency=low
+
+  * New upstrem release.
+  * Set MWM_DDIR to /etc/X11/mwm for 2.* as well (closes: #183641).
+  * Fixed signed/unsigned comparisons (closes: #176386).
+
+ -- Herbert Xu <herbert@debian.org>  Sat, 29 Mar 2003 12:03:12 +1100
+
+lesstif1-1 (1:0.93.36-5) unstable; urgency=low
+
+  * Conflict and replace various libmotif packages (closes: #171220).
+
+ -- Herbert Xu <herbert@debian.org>  Sat, 30 Nov 2002 19:32:21 +1100
+
+lesstif1-1 (1:0.93.36-4) unstable; urgency=low
+
+  * Motif 2.1 is now the default, legacy 1.2 packages are still available.
+  * Removed lesstif-dbg package.
+  * Fixed crash in change_managed (closes: #169006).
+  * Restored fixrpath as libtool really is brain dead.
+
+ -- Herbert Xu <herbert@debian.org>  Sat, 23 Nov 2002 12:58:28 +1100
+
+lesstif1-1 (1:0.93.36-3) unstable; urgency=low
+
+  * Fixed more fontlist segfaults (closes: #158096).
+
+ -- Herbert Xu <herbert@debian.org>  Mon,  2 Sep 2002 20:42:39 +1000
+
+lesstif1-1 (1:0.93.36-2) unstable; urgency=low
+
+  * Fixed fontlist segfault in Label.c (closes: #158096).
+
+ -- Herbert Xu <herbert@debian.org>  Thu, 29 Aug 2002 21:55:36 +1000
+
+lesstif1-1 (1:0.93.36-1) unstable; urgency=low
+
+  * New upstrem release.
+  * Fixed file path in doc-base file properly (closes: #137535).
+  * Removed fixrpath.
+  * Changed automake build-dependency to 1.6.
+
+ -- Herbert Xu <herbert@debian.org>  Sat, 17 Aug 2002 14:58:24 +1000
+
+lesstif1-1 (1:0.93.18-5) unstable; urgency=low
+
+  * Fixed file path in doc-base file (closes: #137535).
+
+ -- Herbert Xu <herbert@debian.org>  Sun, 28 Apr 2002 12:04:37 +1000
+
+lesstif1-1 (1:0.93.18-4) unstable; urgency=low
+
+  * Fixed brain dead stat call with random pointer (closes: #133857).
+
+ -- Herbert Xu <herbert@debian.org>  Sun, 17 Feb 2002 12:05:02 +1100
+
+lesstif1-1 (1:0.93.18-3) unstable; urgency=low
+
+  * Added build-time dependency on bison (closes: #133144).
+
+ -- Herbert Xu <herbert@debian.org>  Sun, 10 Feb 2002 10:07:15 +1100
+
+lesstif1-1 (1:0.93.18-2) unstable; urgency=low
+
+  * Read system.mwmrc if ~/.mwmrc does not exist (closes: #132997).
+
+ -- Herbert Xu <herbert@debian.org>  Sat,  9 Feb 2002 13:58:33 +1100
+
+lesstif1-1 (1:0.93.18-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Herbert Xu <herbert@debian.org>  Fri, 28 Dec 2001 21:13:13 +1100
+
+lesstif1-1 (1:0.93.12-4) unstable; urgency=low
+
+  * Build-dependend on automake1.5 instead of automake (>= 1.5).
+
+ -- Herbert Xu <herbert@debian.org>  Fri, 26 Oct 2001 19:59:12 +1000
+
+lesstif1-1 (1:0.93.12-3) unstable; urgency=low
+
+  * Specified build-dependency on automake 1.5.
+
+ -- Herbert Xu <herbert@debian.org>  Tue, 23 Oct 2001 19:27:35 +1000
+
+lesstif1-1 (1:0.93.12-2) unstable; urgency=low
+
+  * Corrected path to Mwm defaults file in mwm(1).
+  * Added missing ToggleBP.h.
+
+ -- Herbert Xu <herbert@debian.org>  Mon, 15 Oct 2001 19:15:43 +1000
+
+lesstif1-1 (1:0.93.12-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Herbert Xu <herbert@debian.org>  Mon,  8 Oct 2001 20:44:22 +1000
+
+lesstif1-1 (1:0.93.0-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Herbert Xu <herbert@debian.org>  Sun, 26 Aug 2001 19:53:06 +1000
+
+lesstif1-1 (1:0.92.32-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Herbert Xu <herbert@debian.org>  Sat, 21 Jul 2001 22:07:21 +1000
+
+lesstif1-1 (1:0.92.26-2) unstable; urgency=low
+
+  * Fixed inconsistencies wrt the location of mwm (closes: #98460).
+
+ -- Herbert Xu <herbert@debian.org>  Wed, 23 May 2001 19:00:17 +1000
+
+lesstif1-1 (1:0.92.26-1) unstable; urgency=low
+
+  * New upstream release.
+  * Replaced references to xlib6g-dev with xlibs-dev (closes: #89475).
+
+ -- Herbert Xu <herbert@debian.org>  Wed, 11 Apr 2001 20:32:35 +1000
+
+lesstif1 (1:0.92.6-2) unstable; urgency=low
+
+  * Added build-time dependency on flex (closes: #85345).
+
+ -- Herbert Xu <herbert@debian.org>  Fri,  9 Feb 2001 20:08:59 +1100
+
+lesstif1 (1:0.92.6-1) unstable; urgency=low
+
+  * New upstream release (closes: #85003).
+
+ -- Herbert Xu <herbert@debian.org>  Tue,  6 Feb 2001 07:41:52 +1100
+
+lesstif1 (1:0.91.8-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Herbert Xu <herbert@debian.org>  Sat,  4 Nov 2000 13:07:19 +1100
+
+lesstif1 (1:0.91.4-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Herbert Xu <herbert@debian.org>  Fri,  7 Jul 2000 11:10:21 +1000
+
+lesstif1 (1:0.91.3-1) unstable; urgency=low
+
+  * New upstream release.
+  * Added a provides for x-window-manager (closes: #66555).
+
+ -- Herbert Xu <herbert@debian.org>  Mon,  3 Jul 2000 11:29:29 +1000
+
+lesstif1 (1:0.91.0-2) unstable; urgency=low
+
+  * Fixed typo in Build-Depends (closes: #64486).
+
+ -- Herbert Xu <herbert@debian.org>  Mon, 22 May 2000 20:35:37 +1000
+
+lesstif1 (1:0.91.0-1) unstable; urgency=low
+
+  * New upstream release.
+  * Removed lesstifg.
+
+ -- Herbert Xu <herbert@debian.org>  Sat, 20 May 2000 10:47:39 +1000
+
+lesstif1 (1:0.89.4-3) frozen unstable; urgency=low
+
+  * Register mwm as an alternative for x-window-manager (closes: #61281).
+  * Fixed typo in lesstif-bin's postrm which prevented it from being purged
+    (closes: #61289).
+  * Always run automake and co.  The previous release only did so on i386
+    (closes: #61288).
+
+ -- Herbert Xu <herbert@debian.org>  Wed, 29 Mar 2000 19:34:45 +1000
+
+lesstif1 (1:0.89.4-2) frozen unstable; urgency=low
+
+  * Added code to lesstif1's postinst to remove lesstifg's /usr/doc link
+    (closes: #51038).
+  * Corrected path to index.html in .dhelp (closes: #58798).
+  * Remove /etc/X11/mwm if purging (closes: #49211).
+  * Removed system.mwmrc which should be generated by the menu system
+    (closes: #60022).
+  * Listed system.mwmrc-menu as a conffile.
+
+ -- Herbert Xu <herbert@debian.org>  Sat, 18 Mar 2000 19:24:08 +1100
+
+lesstif1 (1:0.89.4-1) unstable; urgency=low
+
+  * New upstream release (closes: #49356).
+  * Add manual page for uil (closes: #18337).
+
+ -- Herbert Xu <herbert@debian.org>  Sat, 13 Nov 1999 19:23:36 +1100
+
+lesstif1 (1:0.89.0-3) unstable; urgency=low
+
+  * lesstif-dev now depends on xlib6g-dev.  Request was from Yann Dirson
+    (closes: #41356).
+
+ -- Herbert Xu <herbert@debian.org>  Sat,  6 Nov 1999 10:52:17 +1100
+
+lesstif1 (1:0.89.0-2) unstable; urgency=low
+
+  * Remove lesstif-bin symlink since it is now a directory.
+  * Corrected pathnames in doc-base file (closes: #47670).
+
+ -- Herbert Xu <herbert@debian.org>  Mon, 18 Oct 1999 17:58:15 +1000
+
+lesstif1 (1:0.89.0-1) unstable; urgency=low
+
+  * New maintainer.
+  * Removed border width code added by T. Straumann in 1.106 from
+    _XmScrolledWPreferredSize().  It violates the semantics for
+    XtGeometryAlmost when called from _XmMainWindowPreferredSize().
+    Be warned that this may not be the right fix.
+    This fixes a lockup in vide.
+  * Changed license location according to the FHS.
+  * Point all Lessdox links to www.lesstif.org (closes: #45419).
+  * MWM_DDIR is now /etc/X11/mwm.
+
+ -- Herbert Xu <herbert@debian.org>  Mon,  4 Oct 1999 17:09:32 +1000
+
+lesstif (1:0.89.0-0.1) unstable; urgency=low
+
+  * New upstream release, tested with DDD and xmbdfed.
+  * Non-maintainer upload.
+  * Updated shlibs, just in case.
+  * Updated Standards-Version.
+  * Register documentation using doc-base.
+  * FHS migration.
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Sat, 11 Sep 1999 17:25:29 +0200
+
+lesstif (1:0.88.9-1) unstable; urgency=low
+
+  * New upstream source.
+  * Install a symlink from mwm's default system.mwmrc location to the FHS
+    location, and drop the patch to mwmparse.y.  We now have no patches
+    outside the debian/ tree.
+  * Updated the shlibs file to require lesstif >= 0.88.9.  Apparently some
+    incompatibilities have crept in.
+  * Marked the package as orphaned.  I no longer wish to maintain the
+    lesstif package.
+
+ -- Richard Braakman <dark@xs4all.nl>  Wed, 28 Jul 1999 15:06:06 +0200
+
+lesstif (1:0.88.1-2) unstable; urgency=low
+
+  * Made lesstifg-dev Replace older versions of lesstifg-dbg, because
+    the static libraries moved.
+  * Changed the package descriptions to reflect the new organization.
+
+ -- Richard Braakman <dark@xs4all.nl>  Tue, 11 May 1999 13:16:10 +0200
+
+lesstif (1:0.88.1-1) unstable; urgency=low
+
+  * New upstream source.
+  * Don't include empty usr/X11R6/include dir in lib package.  (cosmetic)
+  * Drop libc5 support.  This removes the lesstif, lesstif-altdev and
+    lesstif-altdbg packages.
+  * Install NOTES and CURRENT_NOTES with html extensions.
+  * Move the static library from lesstifg-dbg to lesstif-dev, and strip it.
+  * Include an unstripped dynamic library in lesstifg-dbg.  This is more
+    useful than a static debug library, and far smaller.
+  * Instead of the reorderlinks trick, install the files in the right order
+    in the first place.
+
+ -- Richard Braakman <dark@xs4all.nl>  Mon, 10 May 1999 02:15:55 +0200
+
+lesstif (1:0.88.0-1) unstable; urgency=low
+
+  * New upstream source.
+
+ -- Richard Braakman <dark@xs4all.nl>  Sat, 13 Mar 1999 17:27:28 +0100
+
+lesstif (1:0.87.1-1) unstable; urgency=low
+
+  * New upstream source.
+
+ -- Richard Braakman <dark@xs4all.nl>  Mon, 25 Jan 1999 17:12:03 +0100
+
+lesstif (1:0.87.0-1) unstable; urgency=low
+
+  * New upstream source.
+  * Had to re-patch mwmparse.y, because of changes to that code upstream.
+
+ -- Richard Braakman <dark@xs4all.nl>  Fri,  6 Nov 1998 19:46:27 +0100
+
+lesstif (1:0.86.9-2) frozen unstable; urgency=low
+
+  * Built for frozen.  Lesstif version 0.86.5 has some bugs that show up
+    as grave bugs in amaya (#28390) and ddd (#27778), and I've had two
+    independent reports that this version fixes them.
+
+ -- Richard Braakman <dark@xs4all.nl>  Fri,  6 Nov 1998 19:46:27 +0100
+
+lesstif (1:0.86.9-1) unstable; urgency=low
+
+  * New upstream source.
+  * Don't gzip FAQ.html.
+
+ -- Richard Braakman <dark@xs4all.nl>  Sat, 31 Oct 1998 09:11:05 +0100
+
+lesstif (1:0.86.5-2) unstable; urgency=low
+
+  * lesstif-bin: Install /usr/X11R6/lib/X11/app-defaults/Mwm,
+    rather than /usr/X11R6/lib/X11/app-defaults/app-defaults/Mwm.
+    This fixes bug#27975 reported by Branden Robinson.
+
+ -- Richard Braakman <dark@xs4all.nl>  Thu, 15 Oct 1998 14:26:08 +0200
+
+lesstif (1:0.86.5-1) unstable; urgency=low
+
+  * New upstream source.
+  * Upstream made same patch to lib/Xm-2.0/Makefile.am, so I could drop
+    that patch.
+  * Retained patch to mwmparse.y (to look for config file in /etc/X11/mwm).
+
+ -- Richard Braakman <dark@xs4all.nl>  Sun, 20 Sep 1998 12:48:37 +0200
+  
+lesstif (1:0.86.0-2) unstable; urgency=low
+
+  * Don't install 'undocumented' link for xmbind anymore, since it now
+    has a manpage.
+  * Also strip the .note and .comment sections from the binaries and
+    non-debugging libraries; this saves some 5%.
+  * Fix docs menu entry for dwww.  Set section to Apps/Programming,
+    and place it in lesstif and lesstifg, rather than lesstif-bin.
+    Add update-menus invocation to lesstif(g) postinst and postrm
+  * Install COPYING.LIB.html even though it's mostly a copy of the LGPL;
+    index.html refers to it.
+
+ -- Richard Braakman <dark@xs4all.nl>  Tue,  1 Sep 1998 15:57:34 +0200
+
+lesstif (1:0.86.0-1) unstable; urgency=low
+
+  * New upstream source.
+  * (debian/rules) Put .gif files in images directory, because that's where
+    the html files expect them.  (Fixes bug#24620 reported by David Rocher).
+  * (debian/rules) Don't install COPYING file, it's a copy of the GPL.
+  * (debian/rules) Instead of copying shlibs files around, pass the shlibs
+    file to use as a parameter to dpkg-shlibdeps.
+  * (debian/rules) Call dpkg-gencontrol with -isp to include section and
+    priority information in the control file.
+  * (debian/control) Changed sections and priorities to better agree with
+    the values in the archive.
+  * Drop patch to ltconfig, since it has been applied upstream.
+    Keep patch to mwmparse.y.
+  * Patch lib/Xm-2.0/Makefile.am back to the 0.85.3 version.  The new one
+    unconditionally builds the 2.0 library, which we don't want.
+  * Patch lib/Xm-2.0/Makefile.in to match, so that we don't have to rerun
+    automake and fubar the diffs.
+
+ -- Richard Braakman <dark@xs4all.nl>  Thu, 13 Aug 1998 11:00:00 +0200
+
+lesstif (1:0.85.3-1) unstable; urgency=low
+
+  * New upstream source.
+  * The patch for DDD, described in the previous changelog, has been
+    applied upstream.
+  * (clients/Motif-1.2/mwm/mwmparse.y)
+    The patch to look for system.mwmrc in /etc/X11/mwm (rather than
+    somewhere in /usr/lib) was lost along the way.  I reinstated it
+    in a form that might be acceptable upstream, and submitted a patch.
+  * Configure with --enable-back-compat for now.
+    Lesstif broke binary compatibility without changing the soname,
+    I don't know how to deal with that.
+  * (ltconfig) Do the test if -fPIC works with "int main() { return(0);}"
+    rather than "main() { return(0);}", because ltconfig interprets the
+    "return type defaults to int" warning as an indication that it 
+    didn't work.
+
+ -- Richard Braakman <dark@xs4all.nl>  Sun, 12 Jul 1998 22:55:56 +0200
+
+lesstif (1:0.85.2-0.1) unstable; urgency=low
+
+  * New upstream source.
+  * Non-maintainer upload.
+  * Updated shlibs just in case.
+  * Applied patch from DDD upstream maintainer 
+    (ftp://ftp.ips.cs.tu-bs.de:/pub/local/softech/ddd/patches/lesstif/lesstif-0.85.patch)
+    to prevent endless resizes in dialogs, which affected DDD; this
+    patch will likely be included in the next upstream LessTif release.
+  * [configure.in] Disabled configure check for `gethostname' in libnsl, as 
+    this resulted in mixed libc5/libc6 binaries when building the libc5 
+    packages.
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Fri, 26 Jun 1998 08:40:30 +0200
+
+lesstif (1:0.84-1) unstable; urgency=low
+
+  * New upstream source.
+
+ -- Richard Braakman <dark@xs4all.nl>  Sun, 24 May 1998 00:48:12 +0200
+
+lesstif (1:0.83-current-19980509-1) unstable; urgency=low
+
+  * New maintainer.
+  * New upstream source ("current" from May 9, 1998).
+  * (debian/rules) Remove all HTML'd manpages, we install the real ones anyway.
+  * (NOTES) Dropped patch that corrects Ray Dassen's name (fixed upstream)
+  * (configure.in) Dropped patch to override enable_static (fixed upstream)
+  * (configure.in) Dropped libtool-is-a-fool patch from configure.in,
+    inserted it in debian/rules instead.  This keeps the Debian diffs
+    small and tidy, since autoconf does not have to be re-run.
+  * (clients/Motif-1.2/mwm/mwmparse.y) kept patch to look in /etc/X11/mwm
+    rather than XLIB_PATH.  Extended it to cover the next use of XLIB_PATH
+    as well.  This is now the only patch outside the debian/ directory.
+  * (debian/mwm.man, debian/mwmrc.man)  Upstream source now includes these
+    manpages, so delete them from the debian dir.
+  * (debian/rules, debian/system.mwmrc.man)  This manpage was only a .so
+    reference; install it as a symbolic link instead.  And correct the
+    spelling of the filename :)  (was sytem.mwmrc.5x)
+
+ -- Richard Braakman <dark@xs4all.nl>  Mon, 11 May 1998 01:13:05 +0200
+
+lesstif (1:0.83-6) frozen unstable; urgency=low
+
+  * More changes to the maintainer scripts (really fix #20575).
+  * Added a dummy prerm so that systems that got bitten by the grep bug
+    or by problems in the old prerm can upgrade.
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Mon,  6 Apr 1998 08:40:53 +0200
+
+lesstif (1:0.83-5) frozen unstable; urgency=low
+
+  * Improved maintainer scripts (fixed problem with the exit code (#20575)).
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Fri,  3 Apr 1998 19:32:08 +0200
+
+lesstif (1:0.83-4) frozen unstable; urgency=low
+
+  * Fixed the -dbg version (--enable-debug was no longer default, causing
+    the -dbg package to be useless).
+  * Fixed Lintian-reported problems:
+    lesstif-bin: possibly-insecure-handling-of-tmp-files-in-maintainer-script.
+    lesstifg, lesstif: postinst-contains-obsolete-call-to-updatemenus.
+    lesstif-bin: postrm-does-not-call-updatemenus usr/lib/menu/lesstif.
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Thu,  2 Apr 1998 17:24:36 +0200
+
+lesstif (1:0.83-3) frozen unstable; urgency=low
+
+  * Applied patches suggested by the DDD developers.
+    (ftp://ftp.ips.cs.tu-bs.de:/pub/local/softech/ddd/lesstif/patches/lesstif-0.83.patch).
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Thu, 26 Mar 1998 13:29:59 +0100
+
+lesstif (1:0.83-2) frozen; urgency=low
+
+  * Previous version was built as Debian-only source by mistake.
+  * Fixed system.mrmrc location.
+  * Hopefully fixed menu support.
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Sun, 15 Mar 1998 18:52:35 +0100
+
+lesstif (1:0.83-1) unstable; urgency=high
+
+  * New upstream release, in time for the freeze. Yes!
+  * Fixed my name in the NOTES.
+  * Bumped Standards-Version.
+  * Fewer hardwired dependencies (ldd now knows about the libc dependency,
+    though not about the X ones).
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Sat, 14 Mar 1998 20:02:42 +0100
+
+lesstif (19980313-1) unstable; urgency=low
+
+  * New upstream lesstif-current (incorporates the manpages I contributed).
+  * Removed superfluous libltc.
+  * Fixed script-not-executable etc/menu-methods/mwm-menumethod.
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Sat, 14 Mar 1998 15:04:23 +0100
+
+lesstif (19980310-1) unstable; urgency=low
+
+  * New version of lesstif-current (fixes the problem Joop came across).
+  * Remove INSTALL, COPYING &co as per policy.
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Tue, 10 Mar 1998 15:00:05 +0100
+
+lesstif (19980306-1) unstable; urgency=low (high for developers)
+
+  * New version of lesstif-current.
+  * Fixed shlib problem (fixes #19104).
+  * Corrected spelling errors in package description (#18924).
+  * Added my name to the copyright file.
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Sat,  7 Mar 1998 13:05:13 +0100
+
+lesstif (19980224-1) unstable; urgency=low
+
+  * Moved to unstable. Please provide feedback if the reported bugs
+    can be reproduced with this version.
+  * Uses Debian libtool rather than the libtool that comes with LessTif,
+    so we get inter-library dependencies.
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Wed, 25 Feb 1998 11:09:26 +0100
+
+lesstif (19980222-1) experimental; urgency=low
+
+  * Added a workaround to remove -rpath courtesy of Yann Dirson
+    <dirson@debian.org>.
+  * The LessTif source now contains the docs from the LessTif website;
+    they go in the "lesstifg" package.
+  * Fixed the E: no-copyright-file for altdev and altdbg.
+  * Fixed building for other architectures.
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Mon, 23 Feb 1998 14:29:35 +0100
+
+lesstif (19980219-1) experimental; urgency=low
+
+  * lesstif-bin dependency on lesstifg now hardwired too (this dependency
+    was missing in 19980216-1).
+  * Use /etc/X11/mwm/system.mwmrc as the global mwm configuration file.
+    (lintian E: lesstif-bin: file-in-usr-marked-as-conffile)
+  * Copyright files in new location /usr/doc/package/copyright, rather
+    than /usr/doc/copyright/package (lintian E: no-copyright-file).
+  * Reported missing manpages (mwmw, mxmkmf, uil, xmbind) as wishlist bug
+    (#18337), and use undocumented(7) for them.
+    (lintian E: lesstif-bin: binary-without-manpage)
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Thu, 19 Feb 1998 17:17:50 +0100
+
+lesstif (19980216-1) experimental; urgency=medium (high for debugging)
+
+  * Switched to lesstif-current for now after consulting with the LessTif
+    developers regarding the memory leaks and lockups.
+    Please let me know if you still experience these problems.
+  * #10638 and #14740 have been fixed upstream.
+  * The DDD edit->preferences->OK segfault has been fixed upstream.
+  * -current uses a new libtool based build scheme which is broken when
+    installing into another directory than the one configured for. Added
+    ugly work-arounds.
+  * New problems as a result of the libtool version used by the new build
+    scheme:
+    * no longer supports inter-library dependencies; results in libraries
+      that violate policy. Hardwired lesstif and lesstifg dependencies.
+    * forces -rpath use.
+  * Updated shlibs.
+  * Disabled "PRODUCTION" version, for debugging the xmcd leak.
+    If you have a setup in which xmcd leaks, please do
+    env DEBUGSOURCES=all xmcd 2>debug.log and send me the results.
+  * Changed section for the libc5 libraries to "oldlibs".
+  * Removed bashisms from debian/rules.
+  * "menu" support courtesy of Joost Witteveen.
+  * Symlinks /usr/doc/{lesstif,lesstifg}-bin,dev,dbg/copyright
+    (lintian: no-copyright-file).
+  * Fixed E: ldconfig-symlink-before-shlib-in-deb .
+  * Fixed W: lesstifg: obsolete-shlib-entry-in-control-file libUil .
+  * Fixed W: lesstif-bin: relative-conffile usr/X11R6/lib/X11/mwm/system.mwmrc
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Tue, 17 Feb 1998 11:36:24 +0100
+
+lesstif (0.82-4) unstable; urgency=low
+
+  * Checked compliance with latest policy.
+  * Sparc has libc5 libs, but no libc5 X ones, so don't build libc5-compat
+    libraries for it.
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Fri, 16 Jan 1998 08:25:43 +0100
+
+lesstif (0.82-3) unstable; urgency=low
+
+  * Applied lesstif patches recommended by the DDD authors.
+    (ftp://ftp.ips.cs.tu-bs.de/pub/local/softech/ddd/lesstif/patches/).
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Tue, 30 Dec 1997 13:36:55 +0100
+
+lesstif (0.82-2) unstable; urgency=low
+
+  * No longer tries to build libc5 packages on architectures for which there
+    is no libc5.
+  * Forced source to be included; this should fix the corrupted LessTif
+    source and binary files on the FTP sites.
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Tue, 16 Dec 1997 09:35:54 +0100
+
+lesstif (0.82-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Fri, 21 Nov 1997 12:08:56 +0100
+
+lesstif (0.81-2) unstable; urgency=low
+
+  * I had messed up the .so links for the libc5 X libraries, causing the -1
+    libc5 packages not to depend on xlib6. Sigh.
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Thu,  6 Nov 1997 11:53:22 +0100
+
+lesstif (0.81-1) unstable; urgency=low
+
+  * New maintainer.
+  * Fixes bug #14517: lesstif depends on both libc5 and libc6.
+    This spurious dependency was caused by building with fakeroot; fixed by
+    running dkpg-shlibdeps in an environment without LD_PRELOAD.
+  * Fixed lesstifg-dbg dependencies.
+  * Updated FAQ.
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Thu,  6 Nov 1997 08:42:27 +0100
+
+lesstif (0.81-0.5) unstable; urgency=low
+
+  * Now uses /usr/X11R6/include/X11 instead of /usr/include/X11 (Bug #13808).
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Tue, 14 Oct 1997 09:25:59 +0200
+
+lesstif (0.81-0.4) unstable; urgency=low
+
+  * Remove "INSTALL" from installed documentation. (Bug #13207)
+  * prerm no longer fails if the systems has no /etc/X11/window-managers.
+    (Bug #10509)
+  * Use "tempfile" in prerm if possible.
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Tue, 23 Sep 1997 11:52:19 +0200
+
+lesstif (0.81-0.3) unstable; urgency=low
+
+  * Included FAQ as found on the LessTif website.
+  * Changed the package descriptions to reflect that LessTif aims at binary
+    compatibility with Motif.
+  * Removed file accidentally included in source.
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Wed, 17 Sep 1997 21:48:14 +0200
+
+lesstif (0.81-0.2) unstable; urgency=low
+
+  * Fixed wrong package name in dependency for lesstif-altdbg as noted by
+    James Troup.
+  * Changed FTP site from ftp.hungry.com to ftp.lesstif.org .
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Sun, 14 Sep 1997 19:15:33 +0200
+
+lesstif (0.81-0.1) unstable; urgency=medium (high for developers)
+
+  * Non-maintainer release.
+  * New public upstream release.
+  * Libc6 binaries and libraries; libc5 compatibility libraries.
+  * Pristine source.
+  * Section and Priority fields added; descriptions rewritten.
+  * Configured for "production system"; other configuration finetuning;
+    compiled with -O2 optimization.
+  * Dynamic libs themselves linked dynamically against libc and X libs
+    as per 2.0 goals (through config/linux-shared.mk).
+  * Relaxed strictness of dependencies.
+  * Install with preserved timestamps.
+  * Shared libraries no longer executable (policy change).
+  * Removed COPYING.LIB.gz per policy.
+  * Really compile -D_REENTRANT.
+
+ -- J.H.M. Dassen (Ray) <jdassen@wi.LeidenUniv.nl>  Sun, 14 Sep 1997 12:16:45 +0200
+
+lesstif (0.79-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Klee Dienes <klee@debian.org>  Mon, 3 May 1997 15:42:33 -0500
+
+lesstif (0.78-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Klee Dienes <klee@debian.org>  Mon, 15 Apr 1997 19:32:19 -0500
+
+lesstif (0.77.19970413-1) unstable; urgency=low
+
+  * New upstream release.
+  * Make shared libraries executable.
+
+ -- Klee Dienes <klee@debian.org>  Mon, 31 Mar 1997 21:42:25 -0500
+
+lesstif (0.76-1) unstable; urgency=low
+
+  * New upstream release.
+  * Split off static debugging library into lesstif-dbg.
+
+ -- Klee Dienes <klee@debian.org>  Fri, 7 Feb 1997 14:28:49 -0500
+
+lesstif (0.75a-3) unstable; urgency=low
+
+  * Added ldconfig to postinst (fixes #6816).
+
+ -- Klee Dienes <klee@debian.org>  Sun, 26 Jan 1997 17:06:39 -0500
+
+lesstif (0.75a-2) unstable; urgency=low
+
+  * Recompiled with -D_REENTRANT.
+
+ -- Klee Dienes <klee@debian.org>  Sat, 25 Jan 1997 11:28:12 -0500
+
+lesstif (0.75a-1) unstable; urgency=low
+
+  * Updated to latest upstream version.
+  * Minor packaging changes.
+
+ -- Klee Dienes <klee@sedona.com>  Wed, 22 Jan 1997 00:03:04 -0500
+
+lesstif (0.50-4) unstable; urgency=low
+
+  * Minor packaging changes.
+
+ -- Klee Dienes <klee@debian.org>  Sun, 3 Nov 1996 12:11:08 -0700
+
+lesstif (0.50-3) unstable; urgency=low
+
+  * Incremented revision for bad upload to master.debian.org.
+
+ -- Klee Dienes <klee@debian.org>  Thu, 3 Oct 1996 17:02:07 -0700
+
+lesstif (0.50-2) unstable; urgency=low
+
+  * Added symlinks for /usr/include/{Mrm,Xm}
+  * Added symlinks for /usr/X11R6/include/{Mrm,Xm}
+
+ -- Klee Dienes <klee@debian.org>  Sat, 31 Aug 1996 19:23:36 -0700
+
+lesstif (0.50-1) unstable; urgency=low
+
+  * Initial release.
+
+ -- Klee Dienes <klee@debian.org>  Sat, 31 Aug 1996 19:23:10 -0700
+
